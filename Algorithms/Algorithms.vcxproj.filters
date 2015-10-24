@@ -21,7 +21,10 @@
     <ClCompile Include="PerformanceMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SortUtils.cpp">
+    <ClCompile Include="QuickSort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,7 +37,10 @@
     <ClInclude Include="PerformanceMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SortUtils.h">
+    <ClInclude Include="QuickSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

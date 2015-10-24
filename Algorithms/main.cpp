@@ -4,7 +4,10 @@
 #include <vector>
 #include <algorithm>
 #include "PerformanceMonitor.h"
-#include "SortUtils.h"
+#include "QuickSort.h"
+#include <mutex>
+
+
 
 enum Status {
 	STATUS_SUCCESS,
@@ -12,8 +15,7 @@ enum Status {
 };
 
 // Reads a file of integers
-Status readFile(const char* path, std::vector<int>& numbers)
-{
+Status readFile(const char* path, std::vector<int>& numbers) {
 	std::ifstream inputStream;
 	inputStream.open(path);
 	if(!inputStream.is_open()) {
@@ -21,19 +23,19 @@ Status readFile(const char* path, std::vector<int>& numbers)
 		return STATUS_ERROR;
 	}
 
-	
+
 	int number;
 	while(inputStream >> number) {
 		numbers.push_back(number);
+		if(numbers.size() > 100000) { break; }
 	}
 
 	inputStream.close();
-	
+
 	return STATUS_SUCCESS;
 }
 
-void exitWithError()
-{
+void exitWithError() {
 	std::cerr << "Execution failed" << std::endl;
 	std::cin.ignore();
 	exit(1);
@@ -41,11 +43,12 @@ void exitWithError()
 
 
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
+	srand(static_cast<unsigned int>(time(nullptr)));
+
 	const char* inputFilePath = { "Resources/numbers.txt" };
 	PerformanceMonitor monitor;
-	
+
 	std::vector<int> numbers;
 	numbers.reserve(1000000);
 	std::cout << "Reading file..." << std::endl;
@@ -54,19 +57,22 @@ int main(int argc, char* argv[])
 	}
 	std::cout << "Processing " << numbers.size() << " integers" << std::endl;
 	std::random_shuffle(numbers.begin(), numbers.end());
-		
+
+	//std::sort(numbers.begin(), numbers.end(), std::greater<int>());
+
+	std::cout << "start!";
 	monitor.start();
-	//std::sort(numbers.begin(), numbers.end());
-	utils::quickSort(&(numbers[0]), numbers.size());
+	std::sort(numbers.begin(), numbers.end());
+	//utils::quickSortNonRecursive(&(numbers[0]), numbers.size());
 	monitor.stop();
-	
+
 	//Check:
 	std::cout << "Checking result..." << std::endl;
 	int lastNum = numbers[0];
 	for(int num : numbers) {
 		//std::cout << num << std::endl;
 		if(num < lastNum) {
-			std::cerr << "Sort failed "<<num << std::endl;
+			std::cerr << "Sort failed " << num << std::endl;
 			exitWithError();
 		}
 		lastNum = num;

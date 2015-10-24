@@ -49,7 +49,7 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
@@ -80,14 +80,16 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PerformanceMonitor.cpp" />
-    <ClCompile Include="SortUtils.cpp" />
+    <ClCompile Include="QuickSort.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\numbers.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PerformanceMonitor.h" />
-    <ClInclude Include="SortUtils.h" />
+    <ClInclude Include="QuickSort.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
