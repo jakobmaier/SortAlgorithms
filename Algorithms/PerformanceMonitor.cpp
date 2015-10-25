@@ -8,7 +8,6 @@ PerformanceMonitor::PerformanceMonitor() {
 	QueryPerformanceFrequency(&mFrequency);
 }
 
-
 void PerformanceMonitor::start() {
 	QueryPerformanceCounter(&mStartTicks);
 }

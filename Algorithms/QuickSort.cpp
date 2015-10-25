@@ -4,7 +4,17 @@
 
 
 namespace utils {
+
+
 	namespace {		// Anonymous namespace to ensure that the next template functions are not exported
+		enum PivotStrategy {
+			RANDOMIZED_PIVOT,
+			PIVOT_LEFT,
+			PIVOT_RIGHT,
+			PIVOT_MIDDLE
+		};
+		const PivotStrategy pivotStrategy = RANDOMIZED_PIVOT;
+
 
 		/**
 		* Selects a randomized pivot element.
@@ -25,8 +35,20 @@ namespace utils {
 		*/
 		template<typename T>
 		int partition(T* input, int leftIdx, int rightIdx) {
-			int pivotIdx = randRange(leftIdx, rightIdx);
-			std::swap(input[leftIdx], input[pivotIdx]);
+			switch(pivotStrategy) {
+				case PIVOT_LEFT: break;
+				case RANDOMIZED_PIVOT: {
+						int pivotIdx = randRange(leftIdx, rightIdx);
+						std::swap(input[leftIdx], input[pivotIdx]);
+					} break;
+				case PIVOT_RIGHT:
+					std::swap(input[leftIdx], input[rightIdx]);
+					break;
+				case PIVOT_MIDDLE: {
+						int pivotIdx = leftIdx + ((rightIdx - leftIdx) / 2);
+						std::swap(input[leftIdx], input[pivotIdx]);
+					} break;
+			}			
 
 			int l = leftIdx;
 			int r = rightIdx;
@@ -56,7 +78,7 @@ namespace utils {
 			int split;
 			if(leftIdx < rightIdx) {
 				split = partition(input, leftIdx, rightIdx);
-				quickSort(input, leftIdx, split -1);
+				quickSort(input, leftIdx, split - 1);
 				quickSort(input, split + 1, rightIdx);
 			}
 		}
@@ -65,17 +87,17 @@ namespace utils {
 		int nthElement(T* input, int leftIdx, int rightIdx, int n) {
 			int split;
 			int leftElementCount;
-			
+
 			if(leftIdx >= rightIdx) {
 				return leftIdx;
 			}
-			
+
 			split = partition(input, leftIdx, rightIdx);
 			leftElementCount = split - leftIdx + 1;		// number of elements on the left side, incl. split element
 			if(leftElementCount == n) {
 				return split;
 			}
-						
+
 			if(n < leftElementCount) {					// search on left side
 				return nthElement(input, leftIdx, split - 1, n);
 			}

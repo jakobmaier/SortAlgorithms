@@ -1,0 +1,72 @@
+Testprotokoll:
+**************
+
+Die Laufzeiten werden durch starten des Programmes automatisch ermittelt, somit können die Unterschiede auf jedem Rechner per Knopfdruck ermittelt werden.
+Jeder Algorithmus wird mit 3 verschiedenen Eingabedaten aufgerufen:
+    1) einem zufällig sortieren Array
+    2) einem sortierten Array 
+    3) einem unsortierten Array
+
+Das Ergebnis der Sortieralgorithmen wird nach jedem Durchlauf in O(n) überprüft.
+Diese Kontrolle ist nicht Teil der Zeitmessung und findet nur statt, um die Korrektheit der Algorithmen sicher zu stellen.
+
+Die Zeitmessung erfolgt mittels der WINAPI Funktion "QueryPerformanceCounter" mit einer Auflösung im Millisekunden bereich.
+Um bei den nth-Element Algorithmen aussagekräftige Werte zu erhalten wird dieser mehrmals ausgeführt, das angezeigte Ergebnis ist also um ein vielfaches größer als die eigentliche Durchlaufzeit.
+    (Die Anzahl der durchläufe wird ebenfalls ausgegeben)
+
+Folgende Messwerte wurden bei einem unseren Debug-Testläufe ermittelt:
+    - 2 Millionen integer zwischen -10.000 und +10.000
+    - Der nth-Element Algorithmus wurde 100 mal pro Messung ausgeführt, die Werte sind also durch 100 zu dividieren um mit den Sortieralgorithem vergleichen zu können.
+    - Bei quicksort und nth-Element wurde ein randomisierter pivot verwendet.
+    - Das Programm ist im Debug-Build gelaufen
+
+                 unsorted array       sorted array     reverse sorted array
+    -------------------------------------------------------------------------
+      std::sort   00:00:05.607        00:00:04.175         00:00:04.481
+      quicksort   00:00:00.832        00:00:00.690         00:00:04.463
+     nth-element  00:00:01.751        00:00:01.619         00:00:01.621
+
+
+Anmerkungen:
+    - Der Quicksort-Algorithmus verwendet ein randomisiertes pivot-Element. Der Mehraufwand bei nicht-sortieren Arrays ist also hauptsächlich auf IO-Operationen zurück zu führen, nicht auf ungünstig gewählte pivot Elemente.     
+    - Der nth-Element Algorithmus sucht in allen Durchläufen immer nach dem Median, also dem selben Element.
+    - Es ist auch anzumerken dass zwischen den 100 Aufrufen des nth-Element Alogithmus das Eingangsarray nicht zurückgesetzt wird. 
+        Da der Alogithmus das Array während eines Durchlaufes umsortiert, arbeiten nachfolgende Aufrufe also nicht mehr mit einem vollkommen zufälligen bzw. reversed-sortieren Array.
+
+Folgende Messwerte wurden bei einem unserer Release-Testläufe ermittelt:
+    - 20 Millionen integer zwischen -10.000 und +10.000
+    - Der nth-Element Algorithmus wurde 100 mal pro Messung ausgeführt.
+    - Bei quicksort und nth-Element wurde ein randomisierter pivot verwendet.
+
+                 unsorted array       sorted array     reverse sorted array
+    -------------------------------------------------------------------------
+      std::sort   00:00:01.321        00:00:00.176         00:00:00.213
+      quicksort   00:00:04.375        00:00:02.601         00:00:00.253
+     nth-element  00:00:03.732        00:00:03.006         00:00:02.852
+
+
+Pivot: Mit dem Flag "pivotStrategy" kann zwischen manuell zwischen 4 Modi gewechselt werden: 
+            RANDOMIZED_PIVOT, PIVOT_LEFT, PIVOT_RIGHT, PIVOT_MIDDLE
+        Je nach Einstellungen wird für quicksort und dem nth-Element Algorithmus ein anderes pivot Element gewählt.
+        Folgende Tests wurden manuell durchgefürt:
+    - 1 Million Integer zwischen -10.000 und +10.000
+    - Der nth-Element Algorithmus wurde 100 mal pro Messung ausgeführt.
+
+                    pivot    unsorted array       sorted array     reverse sorted array
+    -------------------------------------------------------------------------------------
+      std::sort        -      00:00:00.069        00:00:00.009         00:00:00.012
+      quicksort     left      00:00:00.074       Stack Overflow       Stack Overflow
+                    right     00:00:00.078       Stack Overflow       Stack Overflow
+                    middle    00:00.00.088        00:00:00.024         00:00:00.030
+                    random    00:00.00.092        00:00:00.040         00:00:00.046
+
+
+    Um das Problem des StackOverflow Errors zu umgehen wurde eine zusätzliche, nicht-rekursive Implementierung des Quicksort-Algorithmus implementiert ("quickSortNonRecursive()").
+    Diese nicht-rekursive Implementierung liefert zwar das korrekte Ergebnis, braucht im worst case aber extrem lange für eine Lösung wenn kein randomisiertes pivot Element verwendet wird.
+    Für große Datenmengen, bei denen die Stack-Tiefe immer noch gefährlich werden kann, steht die "quickSortNonRecursive()" Funktion noch zur Verfügung.
+    Diese Funktion ist durch die Verwendung des randomisierten pivot Elements ebenfalls schneller, allerdings führt die Verwendung von std::stack zu Performance Einbußen im Vergleich zur rekursiven Variante.
+
+
+Aufwandsabschätzung nach O-Notation:
+    quicksort:      O(n * log(n))       Im worst case O(n^2), wenn als pivot-Element immer der kleinste bzw. größte Wert genommen wird. Durch das randomisierte pivot-Element sehr unwarscheinlich.
+    nth-element:    O(log(n))           Im worst case O(n), aus den selben Gründen wie bei quicksort.
