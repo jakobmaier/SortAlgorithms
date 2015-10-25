@@ -15,9 +15,10 @@ class PerformanceMonitor {
 public:
 	PerformanceMonitor();
 	void start();
-	void stop();
+	double stop();
 
-	double millis();
-	std::string toString();
+	double millis() const;
+	static std::string millisToString(double millis); //hh:mm:ss.mmm
+	std::string toString() const; //hh:mm:ss.mmm
 };
 

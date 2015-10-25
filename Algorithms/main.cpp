@@ -27,7 +27,7 @@ Status readFile(const char* path, std::vector<int>& numbers) {
 	int number;
 	while(inputStream >> number) {
 		numbers.push_back(number);
-		if(numbers.size() > 100000) { break; }
+		//if(numbers.size() > 100000) { break; }
 	}
 
 	inputStream.close();
@@ -42,43 +42,185 @@ void exitWithError() {
 }
 
 
+void checkSortResult(const std::vector<int>& numbers) {
+	std::cout << "Checking result..." << std::endl;
+	int invalid = utils::isSorted(&(numbers[0]), numbers.size());
+	if(invalid == -1) {
+		std::cerr << "Sort succeeded" << std::endl;
+	} else {
+		std::cerr << "Sort failed at index " << invalid << std::endl;
+	}
+}
 
-int main(int argc, char* argv[]) {
+// Checks an nthElement algorithm
+void checkNthElementAlgo() {
+	const int count = 2000;
+	std::cout << "Checking nthElement algorithm with " << count << " numbers..." << std::endl;
+
+	std::vector<int> numbers;
+	for(int i = 0; i < count; ++i) {
+		numbers.push_back(i);
+		if(i % 10 == 0) { // duplicate numbers
+			numbers.push_back(i);
+		}
+	}
+	assert(utils::isSorted(&(numbers[0]), numbers.size()) == -1);
+
+	std::vector<int> shuffled = numbers;
+	std::random_shuffle(shuffled.begin(), shuffled.end());
+
+	for(unsigned int i = 0; i < numbers.size(); ++i) {
+		shuffled = numbers;
+		int idx = utils::nthElement(&(shuffled[0]), shuffled.size(), i+1);
+		int val = shuffled[idx];
+		
+		//std::cout << i << "th element is at index " << idx << " and has value " << val << std::endl;
+		if(val != numbers[i]) {
+			std::cerr << "nth-element failed for n = " << i << std::endl;
+			return;
+		}
+		std::random_shuffle(shuffled.begin(), shuffled.end());
+	}
+	std::cerr << "nth-element is working correctly" << std::endl;
+}
+
+int main() {
 	srand(static_cast<unsigned int>(time(nullptr)));
+	checkNthElementAlgo();
 
 	const char* inputFilePath = { "Resources/numbers.txt" };
 	PerformanceMonitor monitor;
 
-	std::vector<int> numbers;
-	numbers.reserve(1000000);
+	std::vector<int> originalNumbers;
+	originalNumbers.reserve(2000000);
 	std::cout << "Reading file..." << std::endl;
-	if(readFile(inputFilePath, numbers) != STATUS_SUCCESS) {
+	if(readFile(inputFilePath, originalNumbers) != STATUS_SUCCESS) {
 		exitWithError();
 	}
-	std::cout << "Processing " << numbers.size() << " integers" << std::endl;
-	std::random_shuffle(numbers.begin(), numbers.end());
 
-	//std::sort(numbers.begin(), numbers.end(), std::greater<int>());
+	std::cout << "Processing " << originalNumbers.size() << " integers" << std::endl;
 
-	std::cout << "start!";
+	// Preprocessing for testing purposes:
+	std::cout << "Shuffeling values..." << std::endl;
+	std::random_shuffle(originalNumbers.begin(), originalNumbers.end());
+
+	// The buffers are needed later for better test case comparisons
+	std::cout << "Preparing buffers..." << std::endl;
+	std::vector<int> sortedNumbers;
+	std::vector<int> reversedNumbers;
+	sortedNumbers = originalNumbers;
+	utils::quickSort(&(sortedNumbers[0]), sortedNumbers.size());
+	reversedNumbers = sortedNumbers;
+	std::reverse(reversedNumbers.begin(), reversedNumbers.end());
+
+	assert(utils::isSorted(&(originalNumbers[0]), originalNumbers.size()) >= 0);
+	assert(utils::isSorted(&(sortedNumbers[0]), sortedNumbers.size()) == -1);
+	assert(utils::isSorted(&(reversedNumbers[0]), reversedNumbers.size()) >= 0);
+	
+	// Holder for time measurements:
+	double stdSort[3] = {0};
+	double quickSort[3] = { 0 };	
+	double stdNthElement[3] = { 0 };
+	double nthElement[3] = { 0 };
+
+	std::vector<int> numbers;
+	
+	// stdSort: unsorted array
+	std::cout << "Running std::sort on unsorted array..." << std::endl;
+	numbers = originalNumbers;
 	monitor.start();
 	std::sort(numbers.begin(), numbers.end());
-	//utils::quickSortNonRecursive(&(numbers[0]), numbers.size());
-	monitor.stop();
+	stdSort[0] = monitor.stop();
+	checkSortResult(numbers);
+	// stdSort: sorted array
+	std::cout << "Running std::sort on sorted array..." << std::endl;
+	numbers = sortedNumbers;
+	monitor.start();
+	std::sort(numbers.begin(), numbers.end());
+	stdSort[1] = monitor.stop();
+	checkSortResult(numbers);
+	// stdSort: reverse sorted array
+	std::cout << "Running std::sort on reverse sorted array..." << std::endl;
+	numbers = reversedNumbers;
+	monitor.start();
+	std::sort(numbers.begin(), numbers.end());
+	stdSort[2] = monitor.stop();
+	checkSortResult(numbers);
+	
 
-	//Check:
-	std::cout << "Checking result..." << std::endl;
-	int lastNum = numbers[0];
-	for(int num : numbers) {
-		//std::cout << num << std::endl;
-		if(num < lastNum) {
-			std::cerr << "Sort failed " << num << std::endl;
-			exitWithError();
-		}
-		lastNum = num;
+	// quickSort: unsorted array
+	std::cout << "Running quickSort on unsorted array..." << std::endl;
+	numbers = originalNumbers;
+	monitor.start();
+	utils::quickSort(&(numbers[0]), numbers.size());
+	quickSort[0] = monitor.stop();
+	checkSortResult(numbers);
+	// quickSort: sorted array
+	std::cout << "Running quickSort on sorted array..." << std::endl;
+	numbers = sortedNumbers;
+	monitor.start();
+	utils::quickSort(&(numbers[0]), numbers.size());
+	quickSort[1] = monitor.stop();
+	checkSortResult(numbers);
+	// quickSort: reverse sorted array
+	std::cout << "Running quickSort on reverse sorted array..." << std::endl;
+	numbers = reversedNumbers;
+	monitor.start();
+	std::sort(numbers.begin(), numbers.end());
+	quickSort[2] = monitor.stop();
+	checkSortResult(numbers);
+
+	const int sampleCount = 100;		// number of nth-element calls
+
+	// TODO: std::nth_element
+	// numbers = originalNumbers;
+	// ...
+
+	
+
+	// nthElement: unsorted array
+	std::cout << "Running nthElement on unsorted array..." << std::endl;
+	numbers = originalNumbers;
+	for(int i = 0; i < sampleCount; ++i) {
+		int n = utils::randRange(1, numbers.size());
+		monitor.start();
+		utils::nthElement(&(numbers[0]), numbers.size(), n);
+		nthElement[0] += monitor.stop();
 	}
-	std::cerr << "Sort succeeded" << std::endl;
+	// nthElement: sorted array
+	std::cout << "Running nthElement on sorted array..." << std::endl;
+	numbers = sortedNumbers;
+	for(int i = 0; i < sampleCount; ++i) {
+		int n = utils::randRange(1, numbers.size());
+		monitor.start();
+		utils::nthElement(&(numbers[0]), numbers.size(), n);
+		nthElement[1] += monitor.stop();
+	}
+	// nthElement: reverse sorted array
+	std::reverse(numbers.begin(), numbers.end());
+	std::cout << "Running nthElement on reverse sorted array..." << std::endl;
+	numbers = reversedNumbers;
+	for(int i = 0; i < sampleCount; ++i) {
+		int n = utils::randRange(1, numbers.size());
+		monitor.start();
+		utils::nthElement(&(numbers[0]), numbers.size(), n);
+		nthElement[2] += monitor.stop();
+	}
 
-	std::cout << "Execution time: " << monitor.toString() << std::endl;
+
+
+
+
+	std::cout << std::endl << numbers.size() << " elements have been sorted" << std::endl
+		<< "             unsorted array       sorted array     reverse sorted array" << std::endl
+		<< "-------------------------------------------------------------------------" << std::endl
+		<< "  std::sort   " << PerformanceMonitor::millisToString(  stdSort[0] ) << "        " << PerformanceMonitor::millisToString(  stdSort[1] ) << "         " << PerformanceMonitor::millisToString(  stdSort[2] ) << std::endl
+		<< "  quicksort   " << PerformanceMonitor::millisToString( quickSort[0]) << "        " << PerformanceMonitor::millisToString( quickSort[1]) << "         " << PerformanceMonitor::millisToString( quickSort[2]) << std::endl
+		<< " nth element  " << PerformanceMonitor::millisToString(nthElement[0]) << "        " << PerformanceMonitor::millisToString(nthElement[1]) << "         " << PerformanceMonitor::millisToString(nthElement[2]) << std::endl;
+
+	std::cout << "Note: nth element has been executed " << sampleCount << " times per measurement." << std::endl;
+	int mid = numbers.size() / 2 + 5;
+	std::cout << "Quicksort result: Middle element at index " << mid << " has value " << numbers[mid] << std::endl;
+
 	std::cin.ignore();
 }
