@@ -1,23 +1,20 @@
-﻿Build started 25.10.2015 12:16:43.
-     1>Project "D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Algorithms\Algorithms.vcxproj" on node 2 (Rebuild target(s)).
+﻿Build started 13.11.2015 01:23:38.
+     1>Project "C:\Users\Simon\Documents\Git\SortAlgorithms\Algorithms\Algorithms.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Programme\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W4 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp PerformanceMonitor.cpp QuickSort.cpp Utils.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W4 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Utils.cpp
          Utils.cpp
-         QuickSort.cpp
-         PerformanceMonitor.cpp
-         main.cpp
-     1>d:\daten\entwicklung\workspaces\c++\algorithms\algorithms\main.cpp(108): warning C4127: conditional expression is constant
-     1>d:\daten\entwicklung\workspaces\c++\algorithms\algorithms\main.cpp(191): warning C4189: 'n' : local variable is initialized but not referenced
-     1>d:\daten\entwicklung\workspaces\c++\algorithms\algorithms\main.cpp(138): warning C4189: 'stdNthElement' : local variable is initialized but not referenced
-         Generating Code...
+     1>c:\users\simon\documents\git\sortalgorithms\algorithms\utils.cpp(28): warning C4018: '>=' : signed/unsigned mismatch
+     1>c:\users\simon\documents\git\sortalgorithms\algorithms\utils.cpp(28): warning C4018: '<=' : signed/unsigned mismatch
+     1>cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
        Link:
-         D:\Programme\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Debug\Algorithms.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Debug\Algorithms.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Debug\Algorithms.lib" /MACHINE:X86 Debug\main.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Simon\Documents\Git\SortAlgorithms\Debug\Algorithms.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Simon\Documents\Git\SortAlgorithms\Debug\Algorithms.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Simon\Documents\Git\SortAlgorithms\Debug\Algorithms.lib" /MACHINE:X86 Debug\main.obj
          Debug\PerformanceMonitor.obj
          Debug\QuickSort.obj
+         Debug\Test.obj
          Debug\Utils.obj
-         Algorithms.vcxproj -> D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Debug\Algorithms.exe
-     1>Done Building Project "D:\Daten\Entwicklung\Workspaces\C++\Algorithms\Algorithms\Algorithms.vcxproj" (Rebuild target(s)).
+         Algorithms.vcxproj -> C:\Users\Simon\Documents\Git\SortAlgorithms\Debug\Algorithms.exe
+     1>Done Building Project "C:\Users\Simon\Documents\Git\SortAlgorithms\Algorithms\Algorithms.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.95
+Time Elapsed 00:00:00.76

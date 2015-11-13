@@ -2,9 +2,16 @@
 
 namespace utils {
 	/**
-	 * Returns a randum integer in the range [min, max]
+	 * Returns a random integer in the range [min, max]
 	 */
 	int randRange(int min, int max);
+
+
+	/**
+	* Returns a random integer in the range [min, max]
+	*/
+	size_t randRangeRD(int min, int max);
+
 
 	/**
 	* Checks if the given Array is correctly sorted.
