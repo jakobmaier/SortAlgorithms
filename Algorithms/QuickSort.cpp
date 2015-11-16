@@ -90,13 +90,13 @@ namespace utils {
 			int leftElementCount;
 
 			if(leftIdx >= rightIdx) {
-				return leftIdx;
+				return input[leftIdx];
 			}
 
 			split = partition(input, leftIdx, rightIdx);
 			leftElementCount = split - leftIdx + 1;		// number of elements on the left side, incl. split element
 			if(leftElementCount == n) {
-				return split;
+				return input[split-1];
 			}
 
 			if(n < leftElementCount) {					// search on left side
