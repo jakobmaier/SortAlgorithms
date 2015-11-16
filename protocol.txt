@@ -45,7 +45,7 @@ Folgende Messwerte wurden bei einem unserer Release-Testläufe ermittelt:
      nth-element  00:00:03.732        00:00:03.006         00:00:02.852
 
 
-Pivot: Mit dem Flag "pivotStrategy" kann zwischen manuell zwischen 4 Modi gewechselt werden: 
+Pivot: Mit dem Flag "pivotStrategy" kann manuell zwischen 4 Modi gewechselt werden: 
             RANDOMIZED_PIVOT, PIVOT_LEFT, PIVOT_RIGHT, PIVOT_MIDDLE
         Je nach Einstellungen wird für quicksort und dem nth-Element Algorithmus ein anderes pivot Element gewählt.
         Folgende Tests wurden manuell durchgefürt:
@@ -68,5 +68,8 @@ Pivot: Mit dem Flag "pivotStrategy" kann zwischen manuell zwischen 4 Modi gewech
 
 
 Aufwandsabschätzung nach O-Notation:
-    quicksort:      O(n * log(n))       Im worst case O(n^2), wenn als pivot-Element immer der kleinste bzw. größte Wert genommen wird. Durch das randomisierte pivot-Element sehr unwarscheinlich.
-    nth-element:    O(log(n))           Im worst case O(n), aus den selben Gründen wie bei quicksort.
+	std::sort: 		O(n * log(n))
+    quicksort:      O(n * log(n))       Im worst case O(n^2), wenn als pivot-Element immer der kleinste bzw. größte Wert genommen wird. Durch das randomisierte pivot-Element sehr unwahrscheinlich.
+    nth-element:    O(n * log(n))       Im worst case O(n^2), aus den selben Gründen wie bei quicksort.
+    std::nth_elem	O(n)
+    median of med   O(n)
