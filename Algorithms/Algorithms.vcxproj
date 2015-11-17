@@ -80,19 +80,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PerformanceMonitor.cpp" />
     <ClCompile Include="QuickSort.cpp" />
-    <ClCompile Include="Test.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\numbers.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithms.h" />
     <ClInclude Include="PerformanceMonitor.h" />
     <ClInclude Include="QuickSort.h" />
-    <ClInclude Include="Test.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

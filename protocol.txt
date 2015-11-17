@@ -67,6 +67,21 @@ Pivot: Mit dem Flag "pivotStrategy" kann manuell zwischen 4 Modi gewechselt werd
     Diese Funktion ist durch die Verwendung des randomisierten pivot Elements ebenfalls schneller, allerdings führt die Verwendung von std::stack zu Performance Einbußen im Vergleich zur rekursiven Variante.
 
 
+
+Median der Mediane:
+Wurde deshalb gewählt weil er O(n) garantiert, auch im worst case. Allerdings mit dem Trade off dass die Konstante dafür recht hoch ist. Funktionieren tut er so dass er den input in 5er-blöcke teilt diese sortiert davon die Mediane hernimmt und diese wieder aufteilt bis nur mehr einer übrig ist. In weiterer Nachteil hier ist auch die Speicherplatzbelegung. 					
+					 //  |   |   |   |    |
+					 //  v   v   v   v    v
+	// * * * * *     //  0   2   45  77  100   // 0    45   77   2    100           //  *    *   *    2   100
+	// * * * * *     //  2   66  51  78  101   // 2    51   78   66   101			//  *    *   *   66   101
+	// * * * * *     //  6   90  52  79  102   // 6    52   79   90   102 <<----	// 6    52 |79|  90   102 
+	// * * * * *     //  89  91  65  90  200   // 89   65   90   91   200			// 89   65   *    *    *
+	// * * * * *     //  200 100 98  99  250   // 200  98   99   100  250			// 200  98   *    *    *
+
+Std::nth element 
+
+
+
 Aufwandsabschätzung nach O-Notation:
 	std::sort: 		O(n * log(n))
     quicksort:      O(n * log(n))       Im worst case O(n^2), wenn als pivot-Element immer der kleinste bzw. größte Wert genommen wird. Durch das randomisierte pivot-Element sehr unwahrscheinlich.
